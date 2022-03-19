@@ -4,10 +4,10 @@ set -e
 
 
 # Set this to default to a KNOWN GOOD pi firmware (e.g. 1.20200811); this is used if RASPBERRY_PI_FIRMWARE env variable is not specified
-DEFAULT_GOOD_PI_VERSION="1.20200811"
+DEFAULT_GOOD_PI_VERSION="1.20220120"
 
 # Set this to default to a KNOWN GOOD k3os (e.g. v0.11.0); this is used if K3OS_VERSION env variable is not specified
-DEFAULT_GOOD_K3OS_VERSION="v0.11.0"
+DEFAULT_GOOD_K3OS_VERSION="v0.21.5-k3s2r1"
 
 ## Check if we have any configs
 if [ -z "$(ls config/*.yaml)" ]; then
@@ -158,7 +158,7 @@ dl_dep libselinux1-arm64.deb https://launchpadlibrarian.net/359065467/libselinux
 dl_dep libudev1-arm64.deb https://launchpadlibrarian.net/444834685/libudev1_237-3ubuntu10.31_arm64.deb
 dl_dep libpcre3-arm64.deb https://launchpadlibrarian.net/355683636/libpcre3_8.39-9_arm64.deb
 dl_dep util-linux-arm64.deb https://launchpadlibrarian.net/438655410/util-linux_2.31.1-0.4ubuntu3.4_arm64.deb
-dl_dep rpi-firmware-nonfree-master.zip https://github.com/RPi-Distro/firmware-nonfree/archive/master.zip
+dl_dep rpi-firmware-nonfree-buster.zip https://github.com/RPi-Distro/firmware-nonfree/archive/buster.zip
 
 ## Make the image (capacity in MB, not MiB)
 echo "== Making image and filesystems... =="
@@ -315,7 +315,7 @@ if [ "$IMAGE_TYPE" = "orangepipc2" ]; then
 	sudo ln -s $(cd root/boot; ls -d vmlinuz-*-sunxi64 | head -n1) root/boot/Image
 elif [ "$IMAGE_TYPE" = "raspberrypi" ]; then
   BRCMTMP=$(mktemp -d)
-  7z e -y deps/rpi-firmware-nonfree-master.zip -o"$BRCMTMP" "firmware-nonfree-master/brcm/*" > /dev/null
+  7z e -y deps/rpi-firmware-nonfree-buster.zip -o"$BRCMTMP" "firmware-nonfree-buster/brcm/*" > /dev/null
   sudo mkdir -p root/lib/firmware/brcm/
   sudo cp "$BRCMTMP"/brcmfmac43455* root/lib/firmware/brcm/
   sudo cp "$BRCMTMP"/brcmfmac43430* root/lib/firmware/brcm/
